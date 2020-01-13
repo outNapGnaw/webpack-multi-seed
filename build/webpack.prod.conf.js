@@ -26,7 +26,6 @@ const webpackConfigProd = {
   mode: 'production', // 通过 mode 声明生产环境
   entry: entries.entries,
   optimization: {
-    runtimeChunk: 'single',
     // 样式优化
     minimizer: []
       .concat(
