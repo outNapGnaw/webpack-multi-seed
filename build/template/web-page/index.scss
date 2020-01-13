@@ -1,0 +1,10 @@
+@import 'config';
+@import '~sprite/one.sprite.scss';
+
+body {
+  background: $body-bg;
+}
+
+.ico-user {
+  @include sprite($like-liked);
+}
