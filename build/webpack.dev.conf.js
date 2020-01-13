@@ -17,12 +17,6 @@ const webpackConfigDev = {
   devtool: 'inline-source-map',
   entry: entries.entries,
   watch: true,
-  output: {
-    //path: path.resolve(__dirname, config.path.dist),
-    publicPath: config.dev.assetsPublicPath,
-    filename: '[name].js',
-    chunkFilename: 'js/[name].[chunkhash:7].js',
-  },
   devServer: {
     contentBase: path.join(__dirname, config.path.dist),
     publicPath: '/',

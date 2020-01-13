@@ -26,7 +26,10 @@ module.exports = {
     port: 8888,
     eslint: false,
     includeDir: [],
-    hash: true,
+    /**
+     * 默认hash  .conf.js
+     */
+    // hash: true,
     /**
      * https://webpack.docschina.org/configuration/dev-server/#devserver-proxy
      * 开发环境跨域配置, 默认关闭, 配置如下
@@ -52,7 +55,10 @@ module.exports = {
     assetsSubDirectory: path.dist,
     assetsPublicPath: '/',
     bundleAnalyzerReport: process.env.npm_config_report,
-    hash: true,
+    /**
+     * 默认hash  .conf.js
+     */
+    // hash: true,
     uglify: false,
     cssmin: false,
     includeDir: []

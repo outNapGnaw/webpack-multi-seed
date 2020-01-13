@@ -7,6 +7,7 @@
     "dev": "./node_modules/.bin/cross-env NODE_ENV=development ./node_modules/.bin/webpack-dev-server --config build/webpack.dev.conf.js",
     "build": "./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/.bin/webpack --config build/webpack.prod.conf.js",
     "server": "./node_modules/.bin/live-server ./dist --port=8888",
+    "deploy": "node deploy.js",
     "c": "node build/create.js"
   },
   "author": "nostar",

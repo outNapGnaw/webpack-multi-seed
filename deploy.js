@@ -13,9 +13,9 @@ let client = new OSS({
 })
 
 // 使用async+await方法，实现同步化，方便在失败后重试处理
-async function put(fileName) {
+async function put (fileName) {
   try {
-    let result = await client.put(OssBasePath + fileName, BasePath + fileName)
+    await client.put(OssBasePath + fileName, BasePath + fileName)
     console.log('File Upload Success: ', fileName)
   } catch (e) {
     console.log('File Upload Failed: ', fileName)
@@ -41,7 +41,8 @@ let readFileList = (path, filesList) => {
 let dist = readFileList(BasePath, [])
 
 // 递归执行文件上传操作
-let i = 0, l = dist.length
+let i = 0
+let l = dist.length
 let uploadAsset = () => {
   if (i < l) {
     let name = dist[i].split(BasePath)[1]
@@ -49,7 +50,7 @@ let uploadAsset = () => {
     i++
     uploadAsset()
   } else {
-    console.log('%c deploy success','color:#0f0;')
+    console.log('%c deploy success', 'color:#0f0;')
   }
 }
 uploadAsset()

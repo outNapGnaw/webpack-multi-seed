@@ -21,54 +21,7 @@ if (config.build.includeDir.length > 0) {
 const webpackConfigProd = {
   mode: "production", // 通过 mode 声明生产环境
   entry: entries.entries,
-  output: {
-    path: path.resolve(__dirname, config.path.dist),
-    publicPath: config.build.assetsPublicPath,
-    filename: config.build.hash ? "js/[name].[chunkhash:7].js" : "js/[name].js",
-    chunkFilename: config.build.hash
-      ? "js/[name].[chunkhash:7].js"
-      : "js/[name].js"
-  },
   optimization: {
-    usedExports: true,
-    concatenateModules: true,
-    // splitChunks: {
-    //   cacheGroups: {
-    //     /*styles: {
-    //       name: 'common',
-    //       test: /\.css$/,
-    //       chunks: 'all',
-    //       enforce: true,
-    //     },*/
-    //     /*// 复用的文件，单独抽离 后续再优化此配置
-    //     commons: {
-    //       name: 'commons',
-    //       chunks: 'all',
-    //       minChunks: 2,
-    //       minSize: 1,
-    //       priority: 0
-    //     },
-    //     // 提取 node_modules 中代码
-    //     vendor: {
-    //       name: 'vendor',
-    //       test: /[\\/]node_modules[\\/]/,
-    //       chunks: 'all',
-    //       priority: 10
-    //     }*/
-    //   }
-    // },
-    /**
-     * 提取 webpack 运行时代码
-     * optimization.runtimeChunk 直接置为 true 或设置 name
-     * webpack会添加一个只包含运行时(runtime)额外代码块到每一个入口
-     * 注：这个需要看场景使用，会导致每个入口都加载多一份运行时代码
-     * manifest js have already inline to every html file, please run build and see it in html.
-     * Maybe we don't need manifest file, because we are a multi-page application. each html page's js maybe not complex.
-     * So it depending on how you understand your js file complex or simple.
-     */
-    /*runtimeChunk: {
-      name: 'manifest'
-    },*/
     // 样式优化
     minimizer: []
       .concat(

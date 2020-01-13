@@ -7,6 +7,6 @@
     "standard"
   ],
   "rules": {
-    "no-undef": true
+    "no-undef": 2
   }
 }
