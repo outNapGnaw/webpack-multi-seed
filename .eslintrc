@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "standard"
+  ],
+  "plugins": [
+    "html",
+    "standard"
+  ],
+  "rules": {
+    "no-undef": true
+  }
+}

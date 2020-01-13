@@ -16,12 +16,15 @@
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
+    "@babel/runtime": "^7.3.4",
     "autoprefixer": "^9.1.5",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
+    "babel-polyfill": "^6.26.0",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.2",
     "cross-env": "^5.2.0",
+    "css-loader": "^1.0.1",
     "eslint": "^5.15.3",
     "eslint-config-standard": "^12.0.0",
     "eslint-friendly-formatter": "^4.0.1",
@@ -64,58 +67,5 @@
     "webpack-merge": "^4.1.4",
     "webpack-spritesmith": "^1.0.1"
   },
-  "dependencies": {
-    "@babel/runtime": "^7.3.4",
-    "babel-polyfill": "^6.26.0",
-    "css-loader": "^1.0.1"
-  },
-  "eslintConfig": {
-    "extends": [
-      "standard"
-    ],
-    "plugins": [
-      "html",
-      "standard"
-    ],
-    "rules": {
-      "no-undef": true
-    }
-  },
-  "eslintIgnore": [
-    "build/**",
-    "dist/**",
-    "node_modules/**"
-  ],
-  "stylelint": {
-    "extends": [
-      "stylelint-config-standard"
-    ],
-    "rules": {
-      "indentation": 2,
-      "font-family-no-missing-generic-family-keyword": null,
-      "at-rule-no-unknown": [
-        true,
-        {
-          "ignoreAtRules": [
-            "extend",
-            "at-root",
-            "debug",
-            "warn",
-            "error",
-            "if",
-            "else",
-            "for",
-            "each",
-            "while",
-            "mixin",
-            "include",
-            "content",
-            "return",
-            "function"
-          ]
-        }
-      ]
-    }
-  },
-  "stylelintIgnore": []
+  "dependencies": {}
 }
