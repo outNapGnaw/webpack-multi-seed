@@ -59,8 +59,8 @@ module.exports = {
      * 默认hash  .conf.js
      */
     // hash: true,
-    uglify: false,
-    cssmin: false,
+    uglify: true,
+    cssmin: true,
     includeDir: []
   },
   globals: {
