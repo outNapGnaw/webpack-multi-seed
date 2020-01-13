@@ -237,13 +237,7 @@ const plugins = [
     // cache: true,
     verbose: false
   }),
-  /*new HappyPack({
-    id: 'swig',
-    loaders: ['swig-loader'],
-    threadPool: happyThreadPool,
-    // cache: true,
-    verbose: false
-  }),*/
+
 ]
 module.exports = {
   rules,
