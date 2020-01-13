@@ -2,38 +2,15 @@
 const path = require('path')
 const webpack = require('webpack')
 const copyWebpackPlugin = require('copy-webpack-plugin')
-const TARGET_PROJECT_PATH = process.cwd()
-const packageInfo = require(path.resolve(TARGET_PROJECT_PATH, './package.json'))
 const rules = require('./webpack.rules')
 const config = require('./config')
-const commonChunks = (packageInfo.commonChunks || []).concat([
-  'style-loader',
-  'css-loader',
-  'axios',
-  'process',
-  'regenerator-runtime',
-  'core-js'
-])
-const commonChunksReg = new RegExp(`[\\/](${commonChunks.join('|')})[\\/]`)
 module.exports = {
   context: path.resolve(__dirname, './'),
   output: {
     path: path.resolve(__dirname, config.path.dist),
     publicPath: '/',
     filename: 'js/[name].[chunkhash:7].bundle.js',
-    chunkFilename: "js/[name].[chunkhash:7].bundle.js"
-  },
-
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        common: {
-          chunks: 'all',
-          test: commonChunksReg,
-          name: 'common'
-        }
-      }
-    }
+    chunkFilename: "js/[name].[chunkhash:7].chunk.js"
   },
   resolve: {
     extensions: ['.js', '.scss', '.css', '.less'],

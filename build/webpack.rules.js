@@ -1,23 +1,29 @@
 /* eslint-disable */
+const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const loaderUtils = require('loader-utils')
-const HappyPack = require('happypack');
-const os = require('os');
+const HappyPack = require('happypack')
+const os = require('os')
+const TARGET_PROJECT_PATH = process.cwd()
+const packageInfo = require(path.resolve(TARGET_PROJECT_PATH, './package.json'))
 const happyThreadPool = HappyPack.ThreadPool({
   size: os.cpus().length
-});
+})
 
 const devMode = process.env.NODE_ENV !== 'production'
 const config = require('./config')
-const path = require('path')
-const rules = [{
+const customBrowsers = packageInfo.browsers || []
+const rules = [
+  {
     test: /\.(css|scss|sass)$/,
     include: [path.resolve(__dirname, config.path.src)],
     exclude: /node_modules/,
     use: [
-      devMode ? {
-        loader: 'style-loader',
-      } : MiniCssExtractPlugin.loader,
+      devMode
+        ? {
+            loader: 'style-loader'
+          }
+        : MiniCssExtractPlugin.loader,
       {
         loader: 'css-loader',
         options: {
@@ -28,9 +34,7 @@ const rules = [{
         loader: 'postcss-loader',
         options: {
           sourceMap: true,
-          plugins: [
-            require('autoprefixer')(config.autoprefixer)
-          ]
+          plugins: [require('autoprefixer')(config.autoprefixer)]
         }
       },
       {
@@ -45,59 +49,68 @@ const rules = [{
     test: /\.js$/,
     exclude: /node_modules/,
     loader: 'happypack/loader?id=babel'
-  }, {
+  },
+  {
     test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-    use: [{
-      loader: "url-loader",
-      options: {
-        limit: 5 * 1024,
-        fallback: 'file-loader',
-        // name: 'img/[name].[hash:7].[ext]',
-        name(file) {
-          let filePath = path.relative(__dirname, file)
-          let relative = JSON.parse(loaderUtils.stringifyRequest(this, filePath))
-          let parse = path.parse(relative)
-          if (parse.dir.includes(config.path.img)) {
-            let dir = parse.dir.replace(config.path.img, '')
-            if (dir === '') {
-              return 'img/[name].[hash:7].[ext]'
-            } else {
+    use: [
+      {
+        loader: 'url-loader',
+        options: {
+          limit: 5 * 1024,
+          fallback: 'file-loader',
+          // name: 'img/[name].[hash:7].[ext]',
+          name(file) {
+            let filePath = path.relative(__dirname, file)
+            let relative = JSON.parse(
+              loaderUtils.stringifyRequest(this, filePath)
+            )
+            let parse = path.parse(relative)
+            if (parse.dir.includes(config.path.img)) {
+              let dir = parse.dir.replace(config.path.img, '')
+              if (dir === '') {
+                return 'img/[name].[hash:7].[ext]'
+              } else {
+                return `img${dir}/[name].[hash:7].[ext]`
+              }
+            }
+            if (parse.dir.includes(config.path.pages)) {
+              let dir = parse.dir
+                .replace(config.path.pages, '')
+                .replace(new RegExp(`\\/${config.exclude.assets}\\/img`), '')
+                .replace(new RegExp(`\\/${config.exclude.assets}`), '')
               return `img${dir}/[name].[hash:7].[ext]`
             }
+            return 'img/[name].[hash:7].[ext]'
           }
-          if (parse.dir.includes(config.path.pages)) {
-            let dir = parse.dir
-              .replace(config.path.pages, '')
-              .replace(new RegExp(`\\/${config.exclude.assets}\\/img`), '')
-              .replace(new RegExp(`\\/${config.exclude.assets}`), '');
-            return `img${dir}/[name].[hash:7].[ext]`
-          }
-          return 'img/[name].[hash:7].[ext]';
         }
       }
-    }]
+    ]
   },
   {
     test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-    use: [{
-      loader: "url-loader",
-      options: {
-        limit: 5 * 1024,
-        fallback: 'file-loader',
-        name: 'medias/[name].[hash:7].[ext]'
+    use: [
+      {
+        loader: 'url-loader',
+        options: {
+          limit: 5 * 1024,
+          fallback: 'file-loader',
+          name: 'medias/[name].[hash:7].[ext]'
+        }
       }
-    }]
+    ]
   },
   {
     test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-    use: [{
-      loader: "url-loader",
-      options: {
-        limit: 5 * 1024,
-        fallback: 'file-loader',
-        name: 'fonts/[name].[hash:7].[ext]'
+    use: [
+      {
+        loader: 'url-loader',
+        options: {
+          limit: 5 * 1024,
+          fallback: 'file-loader',
+          name: 'fonts/[name].[hash:7].[ext]'
+        }
       }
-    }]
+    ]
   },
   /*{
     test: /\.(html)$/,
@@ -118,7 +131,7 @@ const rules = [{
     include: [path.resolve(__dirname, config.path.src)],
     loader: 'happypack/loader?id=less'
   }
-];
+]
 if (config.dev.eslint) {
   rules.unshift({
     test: /\.js$/,
@@ -133,12 +146,36 @@ if (config.dev.eslint) {
 const plugins = [
   new HappyPack({
     id: 'babel',
-    loaders: [{
-      loader: 'babel-loader',
-      options: {
-        presets: ['@babel/env'],
+    loaders: [
+      {
+        loader: 'babel-loader',
+        options: {
+          presets: [['@babel/env', {}]],
+          plugins: [
+            '@babel/plugin-syntax-dynamic-import',
+            [
+              '@babel/plugin-proposal-decorators',
+              {
+                legacy: true
+              }
+            ],
+            [
+              '@babel/plugin-proposal-class-properties',
+              {
+                loose: true
+              }
+            ],
+            [
+              '@babel/plugin-proposal-object-rest-spread',
+              {
+                useBuiltIns: true
+              }
+            ],
+            'babel-plugin-transform-export-extensions'
+          ]
+        }
       }
-    }, ].concat(devMode ? ['inject-loader'] : []),
+    ].concat(devMode ? ['inject-loader'] : []),
     threadPool: happyThreadPool,
     // cache: true,
     verbose: false
@@ -192,10 +229,8 @@ const plugins = [
       {
         loader: 'postcss-loader',
         options: {
-          plugins: [
-            require('autoprefixer')(config.autoprefixer)
-          ],
-          sourceMap: true,
+          plugins: [require('autoprefixer')(config.autoprefixer)],
+          sourceMap: true
         }
       },
       {
@@ -226,20 +261,21 @@ const plugins = [
   }),*/
   new HappyPack({
     id: 'ejs',
-    loaders: [{
-      loader: 'underscore-template-loader',
-      options: {
-        prependFilenameComment: __dirname,
-        attributes: ['img:src', 'img:data-src']
+    loaders: [
+      {
+        loader: 'underscore-template-loader',
+        options: {
+          prependFilenameComment: __dirname,
+          attributes: ['img:src', 'img:data-src']
+        }
       }
-    }, ],
+    ],
     threadPool: happyThreadPool,
     // cache: true,
     verbose: false
-  }),
-
+  })
 ]
 module.exports = {
   rules,
   plugins
-};
+}

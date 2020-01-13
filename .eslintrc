@@ -8,5 +8,8 @@
   ],
   "rules": {
     "no-undef": 2
+  },
+  "env": {
+    "jquery": true
   }
 }
